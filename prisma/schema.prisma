@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // Optional, but remove this line if you didn’t set it
+}
+
+// ✅ Place your models BELOW the blocks — outside
+
+model Profile {
+  id           String   @id @default(uuid())
+  name         String
+  location     String?
+  photoUrl     String?
+  availability String?
+  isPublic     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  skillsOffered    SkillOffered[]
+  skillsWanted     SkillWanted[]
+  swapRequestsFrom SwapRequest[]  @relation("FromProfile")
+  swapRequestsTo   SwapRequest[]  @relation("ToProfile")
+}
+
+model SkillOffered {
+  id        String  @id @default(uuid())
+  profile   Profile @relation(fields: [profileId], references: [id])
+  profileId String
+  skillName String
+}
+
+model SkillWanted {
+  id        String  @id @default(uuid())
+  profile   Profile @relation(fields: [profileId], references: [id])
+  profileId String
+  skillName String
+}
+
+model SwapRequest {
+  id            String     @id @default(uuid())
+  fromProfile   Profile    @relation("FromProfile", fields: [fromProfileId], references: [id])
+  fromProfileId String
+  toProfile     Profile    @relation("ToProfile", fields: [toProfileId], references: [id])
+  toProfileId   String
+  skillFrom     String
+  skillTo       String
+  message       String?
+  status        SwapStatus @default(pending)
+  createdAt     DateTime   @default(now())
+}
+
+enum SwapStatus {
+  pending
+  accepted
+  rejected
+}
