@@ -37,9 +37,6 @@ export default function HomePage() {
   const [profiles, setProfiles] = useState<User[]>([])
   const [currentUserProfile, setCurrentUserProfile] = useState<User | null>(null)
 
-  const [searchTerm, setSearchTerm] = useState("")
-  const [availabilityFilter, setAvailabilityFilter] = useState("all")
-  const [currentPage, setCurrentPage] = useState(1)
 
   const itemsPerPage = 4
   const router = useRouter()
@@ -84,8 +81,18 @@ export default function HomePage() {
       if (!error && data) setProfiles(data)
     }
 
+  const floatingAnimation = {
+    y: [-10, 10, -10],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      ease: easeInOut // use the imported easing array from Framer Motion
+    }
+  };
+=======
     fetchProfiles()
   }, [currentUserProfile, user])
+
 
   const filteredUsers = profiles.filter((u) => {
     const matchesSearch =
