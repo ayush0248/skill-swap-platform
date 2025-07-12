@@ -8,7 +8,7 @@ import { auth } from '@/lib/firebaseClient';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, easeInOut } from 'framer-motion';
 import { Sparkles, Users, BookOpen, ArrowRight, Star, Zap, Target, Trophy } from 'lucide-react';
 
 export default function HomePage() {
@@ -57,7 +57,7 @@ export default function HomePage() {
     transition: {
       duration: 3,
       repeat: Infinity,
-      ease: "easeInOut" // use a string value compatible with Framer Motion
+      ease: easeInOut // use the imported easing array from Framer Motion
     }
   };
 
